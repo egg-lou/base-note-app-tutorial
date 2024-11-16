@@ -1,34 +1,56 @@
-/*
- * NoteCard.jsx - Individual Note Display Component
- * 
- * Implementation Steps:
- * 
- * 1. Set up Props:
- *    - note: { id, title, content, createdAt, updatedAt }
- *    - onEdit: (note) => void
- *    - onDelete: (noteId) => void
- * 
- * 2. Import Components:
- *    - Card from '../ui/Card'
- *    - Button from '../ui/Button'
- *    - Pencil, Trash from 'lucide-react'
- * 
- * 3. Render Structure:
- *    <Card>
- *      <div className="flex justify-between">
- *        <h3>{note.title}</h3>
- *        <div className="flex gap-2">
- *          <Button onClick={() => onEdit(note)}><Pencil /></Button>
- *          <Button onClick={() => onDelete(note.id)}><Trash /></Button>
- *        </div>
- *      </div>
- *      <p>{note.content}</p>
- *      <time>{format timestamp}</time>
- *    </Card>
- */
+import { Pencil, Trash } from 'lucide-react';
+import Card from '../ui/Card';
+import Button from '../ui/Button';
 
-export default function NoteCard () {
-    return (
-        <h1>NoteCard to be implemented</h1>
-    )
+export default function NoteCard({ 
+  note,     // Note data to display
+  onEdit,   // Function to handle edit action
+  onDelete  // Function to handle delete action
+}) {
+  // Helper function to format dates in a readable way
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  return (
+    <Card className="flex flex-col h-full">
+      {/* Card Header with Title and Actions */}
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="text-xl font-handwriting font-bold">
+          {note.title}
+        </h3>
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          <Button 
+            variant="secondary" 
+            onClick={() => onEdit(note)}
+            className="p-2"
+          >
+            <Pencil className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="danger" 
+            onClick={() => onDelete(note.id)}
+            className="p-2"
+          >
+            <Trash className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+      
+      {/* Note Content */}
+      <p className="flex-grow font-handwriting mb-4">
+        {note.content}
+      </p>
+      
+      {/* Timestamp */}
+      <div className="text-sm text-gray-500">
+        <time>Last updated: {formatDate(note.updatedAt)}</time>
+      </div>
+    </Card>
+  );
 }
